@@ -14,6 +14,9 @@ services:
       - /volume1/docker/changedetection:/datastore:rw
     environment:
       - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:4000/
+    networks:
+      - playwright-network
+
   playwright-chrome:
     hostname: playwright-chrome
     container_name: Playwright-Chrome
