@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  changedetection:
+    container_name: ChangeDetection
+    image: dgtlmoon/changedetection.io
+    mem_limit: 4g
+    cpu_shares: 768
+    security_opt:
+      - no-new-privileges:true
+    restart: on-failure:5
+    ports:
+      - 5054:5000
+    volumes:
+      - /volume1/docker/changedetection:/datastore:rw
+    environment:
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/
+  playwright-chrome:
+    hostname: playwright-chrome
+    container_name: Playwright-Chrome
+    image: browserless/chrome:1.60-chrome-stable
+    restart: on-failure:5
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+      - ENABLE_DEBUGGER=false
+      - PREBOOT_CHROME=true
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      - DEFAULT_IGNORE_HTTPS_ERRORS=true
+    ports:
+      - 4000:4000  # Expose port 3000 for the WebSocket connection (Playwright WebDriver)
+    networks:
+      - playwright-network   # Ensure the two containers can communicate
+
+networks:
+  playwright-network:
+    driver: bridge
