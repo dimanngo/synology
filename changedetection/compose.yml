@@ -13,7 +13,7 @@ services:
     volumes:
       - /volume1/docker/changedetection:/datastore:rw
     environment:
-      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:4000/
   playwright-chrome:
     hostname: playwright-chrome
     container_name: Playwright-Chrome
@@ -32,7 +32,7 @@ services:
       - DEFAULT_STEALTH=true
       - DEFAULT_IGNORE_HTTPS_ERRORS=true
     ports:
-      - 4000:4000  # Expose port 3000 for the WebSocket connection (Playwright WebDriver)
+      - 4000:4000  # Expose port for the WebSocket connection (Playwright WebDriver)
     networks:
       - playwright-network   # Ensure the two containers can communicate
 
